@@ -6,7 +6,7 @@ var fs = require('fs')
   , util = require('util')
   , f = util.format
 
-  , BUSTER_CORE_PATH = 'node_modules/buster-format/node_modules/buster-core/lib/buster-core.js'
+  , BUSTER_CORE_PATH = 'node_modules/buster-core/lib/buster-core.js'
   , BUSTER_FORMAT_PATH = 'node_modules/buster-format/lib/buster-format.js'
 
 build()
