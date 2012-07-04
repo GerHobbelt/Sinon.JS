@@ -18,6 +18,7 @@
         }
     ],
     "scripts": {
+        "install": "node build.js",
         "test": "node test/node/run.js"
     },
     "devDependencies": {
