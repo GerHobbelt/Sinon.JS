@@ -20,18 +20,28 @@ function build() {
 		fs.mkdirSync(lp('pkg'))
 	}
 
-	merge(lp('lib/sinon/test_case.js'), lp('lib/sinon/assert.js'))
-		.save(lp(output))
-	addLicense(addBusterFormat(output), version)
+	writeFile
+		( output
+		, addLicense(
+		    addBusterFormat(
+		      merge(lp('lib/sinon/test_case.js'), lp('lib/sinon/assert.js'))
+		    )
+		  , version
+		  )
+		)
 
 	writeIE(versionString, version)
 
 	cp('lib/sinon/util/fake_timers.js', 'pkg/sinon-timers%s.js', versionString, version)
 	cp('lib/sinon/util/timers_ie.js', 'pkg/sinon-timers-ie%s.js', versionString, version)
 
-	merge(lp('lib/sinon/util/fake_server_with_clock.js'))
-		.save(lp(f('pkg/sinon-server%s.js', versionString)))
-	addLicense(f('pkg/sinon-server%s.js', versionString), version)
+	writeFile
+		( f('pkg/sinon-server%s.js', versionString)
+		, addLicense
+		  ( merge(lp('lib/sinon/util/fake_server_with_clock.js'))
+		  , version
+		  )
+		)
 
 	cp(output, 'pkg/sinon.js')
 	cp(f('pkg/sinon-ie%s.js', versionString), 'pkg/sinon-ie.js')
@@ -49,11 +59,7 @@ function merge() {
 	      .join('\n')
 	      + '\n'
 
-	return {
-		save: function(name) {
-			fs.writeFileSync(name, content)
-		}
-	}
+	return content
 
 	function uniq(filename) {
 		var used = uniq.used || {}
@@ -78,11 +84,13 @@ function cp(from, to, versionString, version) {
 		to = f(to, versionString)
 	}
 
-	writeFile(to, readFile(from))
+	var content = readFile(from)
 
 	if(version) {
-		addLicense(to, version)
+		content = addLicense(content, version)
 	}
+
+	writeFile(to, content)
 }
 
 function writeIE(versionString, version) {
@@ -93,13 +101,11 @@ function writeIE(versionString, version) {
 	    )
 	  , filename = f('pkg/sinon-ie%s.js', versionString)
 
-	writeFile(filename, content)
-	addLicense(filename, version)
+	writeFile(filename, addLicense(content, version))
 }
 
-function addLicense(file, version) {
-	var content = readFile(file)
-	  , blurp =
+function addLicense(content, version) {
+	var blurp =
 '/**\n\
  * Sinon.JS {{version}}, {{now}}\n\
  *\n\
@@ -119,12 +125,10 @@ function addLicense(file, version) {
 	      }
 	    )
 
-	writeFile(file, out + content.replace(/"use strict";\n/g, ''))
-
-	return file
+	return out + content.replace(/"use strict";\n/g, '')
 }
 
-function addBusterFormat(file) {
+function addBusterFormat(content) {
 	var format =
 'var sinon = (function () {\n\
 %s\
@@ -134,12 +138,9 @@ return sinon;}.call(typeof window != \'undefined\' && window || {}));\n'
 
 	  , busterCore = readFile(BUSTER_CORE_PATH)
 	  , busterFormat = readFile(BUSTER_FORMAT_PATH).replace('var buster = this.buster || {};', '')
-	  , content = readFile(file)
 	  , out = f(format, busterCore, busterFormat, content)
 
-	writeFile(file, out)
-
-	return file
+	return out
 }
 
 function formatDate() {
