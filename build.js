@@ -6,8 +6,8 @@ var fs = require('fs')
   , util = require('util')
   , f = util.format
 
-  , BUSTER_CORE_PATH = 'node_modules/buster-core/lib/buster-core.js'
-  , BUSTER_FORMAT_PATH = 'node_modules/buster-format/lib/buster-format.js'
+  , BUSTER_CORE_PATH = require.resolve('buster-core')
+  , BUSTER_FORMAT_PATH = require.resolve('buster-format')
 
 build()
 
@@ -136,8 +136,8 @@ function addBusterFormat(content) {
 %s\
 return sinon;}.call(typeof window != \'undefined\' && window || {}));\n'
 
-	  , busterCore = readFile(BUSTER_CORE_PATH)
-	  , busterFormat = readFile(BUSTER_FORMAT_PATH).replace('var buster = this.buster || {};', '')
+	  , busterCore = fs.readFileSync(BUSTER_CORE_PATH, 'utf8')
+	  , busterFormat = fs.readFileSync(BUSTER_FORMAT_PATH, 'utf8').replace('var buster = this.buster || {};', '')
 	  , out = f(format, busterCore, busterFormat, content)
 
 	return out
