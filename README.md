@@ -4,6 +4,21 @@
 
 Standalone and test framework agnostic JavaScript test spies, stubs and mocks.
 
+
+# Fork specifics
+
+This branch is a divergent fork of the current sinon.js master branch. Mostly,
+it has merged the js-build and call-extensions branches.
+
+There is a good chance that some of these changes will not be pulled into the
+main fork due to divergent concepts, but I still need this for some projects
+I am working on.
+
+Therefore, this fork :).
+
+I will attempt to keep it somewhat up-to-date with the main fork.
+
+
 ## Installation
 
 via [npm (node package manager)](http://github.com/isaacs/npm)
