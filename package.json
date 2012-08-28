@@ -1,7 +1,7 @@
 {
     "name": "sinon",
     "description": "JavaScript test spies, stubs and mocks.",
-    "version": "1.4.0",
+    "version": "1.4.2",
     "homepage": "http://cjohansen.no/sinon/",
     "author": "Christian Johansen",
     "repository": {
@@ -22,7 +22,7 @@
         "test": "node test/node/run.js"
     },
     "dependencies": {
-        "buster-core": "~0.6",
+        "buster-core": ">=0.6.4",
         "buster-format": "~0.5"
     },
     "devDependencies": {
