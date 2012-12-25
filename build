@@ -27,10 +27,11 @@ def add_license(file, version)
  * #{File.read("LICENSE").split("\n").join("\n * ")}
  */
 
-"use strict";
 PREAMBLE
 
-    f.puts(contents.gsub("\"use strict\";\n", ""))
+    contents = contents.gsub("\"use strict\";\n", "")
+    declaration = "var sinon = (function () {"
+    f.puts(contents.sub(declaration, "#{declaration}\n\"use strict\";\n"))
   end
 end
 
@@ -49,7 +50,7 @@ buster-format not found, skipping. To build with buster-format support:
 
   File.open(file, "w") do |f|
     f.puts("var sinon = (function () {")
-    f.puts(File.read("./node_modules/buster-format/node_modules/buster-core/lib/buster-core.js"))
+    f.puts(File.read("./node_modules/buster-core/lib/buster-core.js"))
     f.puts(File.read("./node_modules/buster-format/lib/buster-format.js").gsub("var buster = this.buster || {};", ""))
     f.puts(contents)
     f.puts("return sinon;}.call(typeof window != 'undefined' && window || {}));")
