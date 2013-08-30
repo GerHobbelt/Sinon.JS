@@ -1,0 +1,11 @@
+{
+  "name": "sinon",
+  "main": "sinon-1.7.3.js",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
